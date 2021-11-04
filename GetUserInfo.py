@@ -283,3 +283,5 @@ def getShipChMod(user_id, ship, file = 'общий'):
         if(check == 2):
             check+=1
     return shipOut
+
+#
