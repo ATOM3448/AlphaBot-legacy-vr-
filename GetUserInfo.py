@@ -92,4 +92,111 @@ def getCargoFull(user_id, file = 'общий'):
         if((check == 2) and (i[0] != 'С')):
             cargo+=i
     return cargo
+
 #Получить склад без нулей
+def getCargoReal(user_id, file = 'общий'):
+    lineInFile = getLineInFile(user_id, file)
+    cargo = ''
+    check = 0
+    for i in lineInFile:
+        if(i[0] == 'С'):
+            check += 1
+        if(check == 1):
+            if(i[0]+i[1]+i[2]+i[3]+i[4] == 'СКЛАД'):
+                check += 1
+            else:
+                check = 0
+        if(check == 2):
+            if((i[0] != 'С') and (i[0] != '<')):
+                check+=1
+        if(check == 3):
+            break
+        if((check == 2) and (i[0] != 'С')):
+            indexOfStatNum = i.index('-') + 2
+            if(i[indexOfStatNum] != '0'):
+                cargo += i
+    return cargo
+
+#Получить запрашиваемый ресурс
+def getCargoChRes(user_id, resur, file = 'общий'):
+    lineInFile = getLineInFile(user_id, file)
+    res = ''
+    check = 0
+    for i in lineInFile:
+        if(i[0] == 'С'):
+            check += 1
+        if(check == 1):
+            if(i[0]+i[1]+i[2]+i[3]+i[4] == 'СКЛАД'):
+                check += 1
+            else:
+                check = 0
+        if(check == 2):
+            if((i[0] != 'С') and (i[0] != '<')):
+                check+=1
+        if(check == 3):
+            break
+        if((check == 2) and (i[0] != 'С')):
+            count = 0
+            nameOfRes = ''
+            for ii in i:
+                if(count > 1):
+                    if(ii != ':'):
+                        nameOfRes += ii
+                    else:
+                        break
+                else:
+                    count+=1
+                    continue
+            if(nameOfRes == resur):
+                for ii in i:
+                        res += ii
+                break
+    return res
+
+#Получить кол-во запрашиваемого ресурса
+def getCargoChResBal(user_id, resur, file = 'общий'):
+    lineInFile = getLineInFile(user_id, file)
+    res = ''
+    check = 0
+    for i in lineInFile:
+        if(i[0] == 'С'):
+            check += 1
+        if(check == 1):
+            if(i[0]+i[1]+i[2]+i[3]+i[4] == 'СКЛАД'):
+                check += 1
+            else:
+                check = 0
+        if(check == 2):
+            if((i[0] != 'С') and (i[0] != '<')):
+                check+=1
+        if(check == 3):
+            break
+        if((check == 2) and (i[0] != 'С')):
+            count = 0
+            nameOfRes = ''
+            for ii in i:
+                if(count > 1):
+                    if(ii != ':'):
+                        nameOfRes += ii
+                    else:
+                        break
+                else:
+                    count+=1
+                    continue
+            if(nameOfRes == resur):
+                check2 = 0
+                for ii in i:
+                    if(check2 == 0):
+                        if(ii == ' '):
+                            check2 += 1
+                    if(ii == '-'):
+                        check2 += 1
+                    if(check2 == 2):
+                        if(ii == ' '):
+                            check2+=1
+                    if(check2 == 3):
+                        res += ii
+                break
+    return int(res)
+
+#Получить 
