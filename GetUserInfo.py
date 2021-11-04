@@ -199,4 +199,87 @@ def getCargoChResBal(user_id, resur, file = 'общий'):
                 break
     return int(res)
 
-#Получить 
+#Получить корабли
+def getShips(user_id, file = 'общий'):
+    lineInFile = getLineInFile(user_id, file)
+    ships = ''
+    check = 0
+    for i in lineInFile:
+        if(check == 0):
+            if(i[0] == 'К'):
+                check += 1
+        if(check == 1):
+            if(i[0]+i[1]+i[2]+i[3]+i[4]+i[5]+i[6] == 'КОРАБЛИ'):
+                check += 1
+            else:
+                check = 0
+        if(i[0] == 'Д'):
+            if(i[0]+i[1]+i[2]+i[3]+i[4]+i[5] == "ДОБЫЧА"):
+                break
+        if(check == 3):
+            ships += i
+        if(check == 2):
+            check+=1
+    return ships
+
+#Получить корабли без нулей
+def getShipsReal(user_id, file = 'общий'):
+    lineInFile = getLineInFile(user_id, file)
+    ships = ''
+    check = 0
+    for i in lineInFile:
+        if(check == 0):
+            if(i[0] == 'К'):
+                check += 1
+        if(check == 1):
+            if(i[0]+i[1]+i[2]+i[3]+i[4]+i[5]+i[6] == 'КОРАБЛИ'):
+                check += 1
+            else:
+                check = 0
+        if(i[0] == 'Д'):
+            if(i[0]+i[1]+i[2]+i[3]+i[4]+i[5] == "ДОБЫЧА"):
+                break
+        if(check == 3):
+            indexOfStatNum = i.index(' ') + 3
+            if(i[indexOfStatNum] != '0'):
+                ships += i
+        if(check == 2):
+            check+=1
+    return ships
+
+#Получить конкретный корабль
+def getShipChMod(user_id, ship, file = 'общий'):
+    lineInFile = getLineInFile(user_id, file)
+    ship = ship.lower()
+    shipOut = ''
+    shipName = ''
+    check = 0
+    shipToFindLen = len(ship)
+    for i in lineInFile:
+        if(check == 0):
+            if(i[0] == 'К'):
+                check += 1
+        if(check == 1):
+            if(i[0]+i[1]+i[2]+i[3]+i[4]+i[5]+i[6] == 'КОРАБЛИ'):
+                check += 1
+            else:
+                check = 0
+        if(i[0] == 'Д'):
+            if(i[0]+i[1]+i[2]+i[3]+i[4]+i[5] == "ДОБЫЧА"):
+                break
+        if(check == 3):
+            if(len(i) > shipToFindLen):
+                checkis = 0
+                shipName = ''
+                for ii in i:
+                    if((ii == '★') or (ii == '\"')):
+                        continue
+                    if(ii == ' '):
+                        break
+                    shipName += ii
+        if(shipName.lower() == ship):
+            shipOut = i
+            break
+        if(check == 2):
+            check+=1
+    return shipOut

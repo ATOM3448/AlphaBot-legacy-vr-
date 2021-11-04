@@ -22,8 +22,8 @@ async def changebalance(ctx, when, how):
 #тест класса
 @bot.command()
 @commands.has_permissions(administrator=True)
-async def clastes(ctx, res):
-    await ctx.send(str(GetUserInfo.getCargoChRes(ctx.message.author.id, res)))
+async def clastes(ctx, ship):
+    await ctx.send(str(GetUserInfo.getShipChMod(ctx.message.author.id, ship)))
 
 #информация о игроке
 @bot.command()
