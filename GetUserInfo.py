@@ -284,4 +284,42 @@ def getShipChMod(user_id, ship, file = 'общий'):
             check+=1
     return shipOut
 
-#
+#Получить кол-во запрашиваемых кораблей
+def getShipChModCount(user_id, ship, file = 'общий'):
+    lineInFile = getLineInFile(user_id, file)
+    ship = ship.lower()
+    shipOut = ''
+    shipName = ''
+    check = 0
+    shipToFindLen = len(ship)
+    for i in lineInFile:
+        if(check == 0):
+            if(i[0] == 'К'):
+                check += 1
+        if(check == 1):
+            if(i[0]+i[1]+i[2]+i[3]+i[4]+i[5]+i[6] == 'КОРАБЛИ'):
+                check += 1
+            else:
+                check = 0
+        if(i[0] == 'Д'):
+            if(i[0]+i[1]+i[2]+i[3]+i[4]+i[5] == "ДОБЫЧА"):
+                break
+        if(check == 3):
+            if(len(i) > shipToFindLen):
+                checkis = 0
+                shipName = ''
+                for ii in i:
+                    if((ii == '★') or (ii == '\"')):
+                        continue
+                    if(ii == ' '):
+                        break
+                    shipName += ii
+        if(shipName.lower() == ship):
+            indexOfStatNum = i.index(' ') + 3
+            for ii in i:
+                if(i.index(ii) >= indexOfStatNum):
+                    shipOut += ii
+            break
+        if(check == 2):
+            check+=1
+    return shipOut
