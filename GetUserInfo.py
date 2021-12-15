@@ -323,3 +323,25 @@ def getShipChModCount(user_id, ship, file = 'общий'):
         if(check == 2):
             check+=1
     return shipOut
+
+#Получить добычу
+def getProduction(user_id, file = 'общий'):
+    lineInFile = getLineInFile(user_id, file)
+    production = ''
+    check = 0
+    for i in lineInFile:
+        if(i[0] == 'Д'):
+            check += 1
+        if(check == 1):
+            if(i[0]+i[1]+i[2]+i[3]+i[4]+i[5] == 'ДОБЫЧА'):
+                check += 1
+            else:
+                check = 0
+        if(check == 2):
+            if((i[0] != 'Д') and (i[0] != '<')):
+                check+=1
+        if(check == 3):
+            break
+        if((check == 2) and (i[0] != 'Д')):
+            production+=i
+    return production
